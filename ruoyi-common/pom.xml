@@ -136,6 +136,12 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
         </dependency>
+
+        <!-- mybatis-plus 增强CRUD -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

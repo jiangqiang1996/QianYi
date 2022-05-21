@@ -31,9 +31,16 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://192.168.1.2:3306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        url: jdbc:mysql://router.jiangqiang.xin:3306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
         username: root
-        password: 19961226qwe
+        #加密的密码
+        password: KTCDCM0GkaH22lsI7e5F6hgm4AgR55HakdVuBX//zqDcXACRdmQJGSxvAv5oXAyGcBfJv+cybMj2G8KDE3+VoQ==
+      filter:
+        config:
+          # 是否配置加密
+          enabled: true
+      #加密公钥
+      connectProperties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAI8d5hKBWLFOcb2qaOgdLOCgIycr4C1AbYRWCwp4sJJlXc4qQKScORnxQlL7+Y/Ecr1bImv19UFQ8DCem21AsYsCAwEAAQ==
       # 从库数据源
       slave:
         # 从数据源开关/默认关闭

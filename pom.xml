@@ -36,6 +36,7 @@
         <hutool.version>5.8.1</hutool.version>
         <ip2region.version>1.7.2</ip2region.version>
         <captcha-spring-boot-starter.version>1.2.7</captcha-spring-boot-starter.version>
+        <lombok.version>1.18.24</lombok.version>
     </properties>
 	
     <!-- 依赖声明 -->
@@ -218,6 +219,14 @@
                 <artifactId>captcha-spring-boot-starter</artifactId>
                 <version>${captcha-spring-boot-starter.version}</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

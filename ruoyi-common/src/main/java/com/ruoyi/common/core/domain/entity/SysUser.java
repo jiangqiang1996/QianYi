@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.constraints.*;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -24,6 +25,7 @@ import com.ruoyi.common.xss.Xss;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

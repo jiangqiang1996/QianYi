@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
     <groupId>com.ruoyi</groupId>
     <artifactId>ruoyi</artifactId>
     <version>3.8.2</version>
@@ -11,12 +11,12 @@
     <name>ruoyi</name>
     <url>http://www.ruoyi.vip</url>
     <description>若依管理系统</description>
-    
+
     <properties>
         <ruoyi.version>3.8.2</ruoyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
         <druid.version>1.2.8</druid.version>
         <bitwalker.version>1.21</bitwalker.version>
@@ -38,7 +38,7 @@
         <captcha-spring-boot-starter.version>1.2.7</captcha-spring-boot-starter.version>
         <lombok.version>1.18.24</lombok.version>
     </properties>
-	
+
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>

@@ -22,7 +22,7 @@ import Quill from "quill";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
-import { getToken } from "@/utils/auth";
+import {getToken} from "@/utils/auth";
 
 export default {
   name: "Editor",
@@ -155,6 +155,14 @@ export default {
       this.Quill.on("editor-change", (eventName, ...args) => {
         this.$emit("on-editor-change", eventName, ...args);
       });
+      this.$refs.editor.addEventListener("click", (event) => {//设置光标
+        if (!this.Quill.getSelection()) {
+          let length = this.Quill.getLength();//最小值为1，字符长度
+          window.document.querySelector(".ql-editor").focus()
+          this.Quill.setSelection(length - 1, 0);
+        }
+        event.stopPropagation()
+      })
     },
     // 上传前校检格式和大小
     handleBeforeUpload(file) {

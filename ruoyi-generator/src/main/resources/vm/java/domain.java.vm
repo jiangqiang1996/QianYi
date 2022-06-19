@@ -21,7 +21,7 @@ import com.ruoyi.common.core.domain.TreeEntity;
 
 /**
  * ${functionName}对象 ${tableName}
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */
@@ -34,6 +34,7 @@ import com.ruoyi.common.core.domain.TreeEntity;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class ${ClassName} extends ${Entity} {
     private static final long serialVersionUID = 1L;
 

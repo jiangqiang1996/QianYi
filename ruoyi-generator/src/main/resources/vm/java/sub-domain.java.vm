@@ -22,6 +22,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  */
 @Builder
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 public class ${subClassName} extends BaseEntity

@@ -192,21 +192,22 @@
           <image-upload v-model="form.${field}"/>
         </el-form-item>
 #elseif($column.htmlType == "fileUpload")
-        <el-form-item label="${comment}">
-          <file-upload v-model="form.${field}"/>
-        </el-form-item>
+  <el-form-item label="${comment}">
+    <file-upload v-model="form.${field}"/>
+  </el-form-item>
 #elseif($column.htmlType == "editor")
-        <el-form-item label="${comment}">
-          <editor v-model="form.${field}" :min-height="192"/>
-        </el-form-item>
+  <el-form-item label="${comment}">
+    <qy-editor v-model="form.${field}" :min-height="192"/>
+  </el-form-item>
 #elseif($column.htmlType == "select" && "" != $dictType)
-        <el-form-item label="${comment}" prop="${field}">
-          <el-select v-model="form.${field}" placeholder="请选择${comment}">
-            <el-option
-              v-for="dict in ${dictType}"
-              :key="dict.value"
-              :label="dict.label"
-              #if($column.javaType == "Integer" || $column.javaType == "Long"):value="parseInt(dict.value)"#else:value="dict.value"#end
+  <el-form-item label="${comment}" prop="${field}">
+    <el-select v-model="form.${field}" placeholder="请选择${comment}">
+      <el-option
+          v-for="dict in ${dictType}"
+          :key="dict.value"
+          :label="dict.label"
+          #if($column.javaType == "Integer" || $column.javaType == "Long"):value="parseInt(dict.value)"
+          #else:value="dict.value"#end
 
             ></el-option>
           </el-select>
@@ -280,17 +281,23 @@
 </template>
 
 <script setup name="${BusinessName}">
-import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName} } from "@/api/${moduleName}/${businessName}";
+  import {
+    add${BusinessName},
+    del${BusinessName},
+    get${BusinessName},
+    list${BusinessName},
+    update${BusinessName}
+  } from "@/api/";
 
-const { proxy } = getCurrentInstance();
-#if(${dicts} != '')
-#set($dictsNoSymbol=$dicts.replace("'", ""))
-const { ${dictsNoSymbol} } = proxy.useDict(${dicts});
-#end
+  const {proxy} = getCurrentInstance();
+      #if(${dicts} != '')
+          #set($dictsNoSymbol=$dicts.replace("'", ""))
+      const { ${dictsNoSymbol} } = proxy.useDict(${dicts});
+      #end
 
-const ${businessName}List = ref([]);
-const ${businessName}Options = ref([]);
-const open = ref(false);
+  const ${businessName}List = ref([]);
+  const ${businessName}Options = ref([]);
+  const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const title = ref("");
@@ -364,8 +371,8 @@ function getTreeselect() {
     ${businessName}Options.value.push(data);
   });
 }
-	
-// 取消按钮
+
+  // 取消按钮
 function cancel() {
   open.value = false;
   reset();

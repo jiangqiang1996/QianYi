@@ -163,7 +163,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -191,35 +191,36 @@
           <el-input v-model="form.${field}" placeholder="请输入${comment}" />
         </el-form-item>
 #elseif($column.htmlType == "imageUpload")
-        <el-form-item label="${comment}">
-          <image-upload v-model="form.${field}"/>
-        </el-form-item>
+  <el-form-item label="${comment}">
+    <image-upload v-model="form.${field}"/>
+  </el-form-item>
 #elseif($column.htmlType == "fileUpload")
-        <el-form-item label="${comment}">
-          <file-upload v-model="form.${field}"/>
-        </el-form-item>
+  <el-form-item label="${comment}">
+    <file-upload v-model="form.${field}"/>
+  </el-form-item>
 #elseif($column.htmlType == "editor")
-        <el-form-item label="${comment}">
-          <editor v-model="form.${field}" :min-height="192"/>
-        </el-form-item>
+  <el-form-item label="${comment}">
+    <qy-editor v-model="form.${field}" :min-height="192"/>
+  </el-form-item>
 #elseif($column.htmlType == "select" && "" != $dictType)
-        <el-form-item label="${comment}" prop="${field}">
-          <el-select v-model="form.${field}" placeholder="请选择${comment}">
-            <el-option
-              v-for="dict in ${dictType}"
-              :key="dict.value"
-              :label="dict.label"
-              #if($column.javaType == "Integer" || $column.javaType == "Long"):value="parseInt(dict.value)"#else:value="dict.value"#end
+  <el-form-item label="${comment}" prop="${field}">
+    <el-select v-model="form.${field}" placeholder="请选择${comment}">
+      <el-option
+          v-for="dict in ${dictType}"
+          :key="dict.value"
+          :label="dict.label"
+          #if($column.javaType == "Integer" || $column.javaType == "Long"):value="parseInt(dict.value)"
+          #else:value="dict.value"#end
 
-            ></el-option>
-          </el-select>
-        </el-form-item>
+      ></el-option>
+    </el-select>
+  </el-form-item>
 #elseif($column.htmlType == "select" && $dictType)
-        <el-form-item label="${comment}" prop="${field}">
-          <el-select v-model="form.${field}" placeholder="请选择${comment}">
-            <el-option label="请选择字典生成" value="" />
-          </el-select>
-        </el-form-item>
+  <el-form-item label="${comment}" prop="${field}">
+    <el-select v-model="form.${field}" placeholder="请选择${comment}">
+      <el-option label="请选择字典生成" value=""/>
+    </el-select>
+  </el-form-item>
 #elseif($column.htmlType == "checkbox" && "" != $dictType)
         <el-form-item label="${comment}">
           <el-checkbox-group v-model="form.${field}">
@@ -347,17 +348,17 @@
 </template>
 
 <script setup name="${BusinessName}">
-import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName} } from "@/api/${moduleName}/${businessName}";
+  import {add${BusinessName}, del${BusinessName}, get${BusinessName}, list${BusinessName}, update${BusinessName}} from "@/api/";
 
-const { proxy } = getCurrentInstance();
-#if(${dicts} != '')
-#set($dictsNoSymbol=$dicts.replace("'", ""))
-const { ${dictsNoSymbol} } = proxy.useDict(${dicts});
-#end
+  const {proxy} = getCurrentInstance();
+      #if(${dicts} != '')
+          #set($dictsNoSymbol=$dicts.replace("'", ""))
+      const { ${dictsNoSymbol} } = proxy.useDict(${dicts});
+      #end
 
-const ${businessName}List = ref([]);
-#if($table.sub)
-const ${subclassName}List = ref([]);
+  const ${businessName}List = ref([]);
+      #if($table.sub)
+      const ${subclassName}List = ref([]);
 #end
 const open = ref(false);
 const loading = ref(true);
@@ -584,13 +585,17 @@ function handle${subClassName}SelectionChange(selection) {
   checked${subClassName}.value = selection.map(item => item.index)
 }
 
-#end
-/** 导出按钮操作 */
-function handleExport() {
-  proxy.download('${moduleName}/${businessName}/export', {
-    ...queryParams.value
-  }, `${businessName}_#[[${new Date().getTime()}]]#.xlsx`)
-}
+  #end
 
-getList();
+  /** 导出按钮操作 */
+  function handleExport() {
+    proxy.download('${moduleName}/${businessName}/export', {
+      ...queryParams.value
+    }, `${businessName}_#[[${new Date().getTime()}]]#.xlsx`)
+  }
+
+  getList();
 </script>
+<style scoped lang="scss">
+
+</style>

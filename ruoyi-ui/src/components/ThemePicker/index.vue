@@ -155,7 +155,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .theme-message,
 .theme-picker-dropdown {
   z-index: 99999 !important;

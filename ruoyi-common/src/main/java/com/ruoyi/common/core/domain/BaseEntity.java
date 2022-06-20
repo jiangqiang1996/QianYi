@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class BaseEntity implements Serializable {
     /**
      * 搜索值
      */
+    @TableField(exist = false)
     private String searchValue;
 
     /**
@@ -50,12 +52,14 @@ public class BaseEntity implements Serializable {
     /**
      * 备注
      */
+    @TableField(exist = false)
     private String remark;
 
     /**
      * 请求参数
      */
     @Getter(AccessLevel.NONE)
+    @TableField(exist = false)
     private Map<String, Object> params;
 
 

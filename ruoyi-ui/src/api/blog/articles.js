@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询文章新增列表
 export function listArticles(query) {
   return request({
-    url: '/web/articles/list',
+    url: '/blog/articles/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listArticles(query) {
 // 查询文章新增详细
 export function getArticles(articleId) {
   return request({
-    url: '/web/articles/' + articleId,
+    url: '/blog/articles/' + articleId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getArticles(articleId) {
 // 新增文章新增
 export function addArticles(data) {
   return request({
-    url: '/web/articles',
+    url: '/blog/articles',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addArticles(data) {
 // 修改文章新增
 export function updateArticles(data) {
   return request({
-    url: '/web/articles',
+    url: '/blog/articles',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateArticles(data) {
 // 删除文章新增
 export function delArticles(articleId) {
   return request({
-    url: '/web/articles/' + articleId,
+    url: '/blog/articles/' + articleId,
     method: 'delete'
   })
 }

@@ -47,7 +47,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['web:articles:add']"
+          v-hasPermi="['blog:articles:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -58,7 +58,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['web:articles:edit']"
+          v-hasPermi="['blog:articles:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -69,7 +69,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['web:articles:remove']"
+          v-hasPermi="['blog:articles:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -79,7 +79,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['web:articles:export']"
+          v-hasPermi="['blog:articles:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -101,7 +101,7 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['web:articles:edit']"
+            v-hasPermi="['blog:articles:edit']"
           >修改
           </el-button>
           <el-button
@@ -109,7 +109,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['web:articles:remove']"
+            v-hasPermi="['blog:articles:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -124,15 +124,14 @@
     />
 
     <!-- 添加或修改文章新增对话框 -->
-    <el-dialog :close-on-click-modal="false" :title="title" :visible.sync="open" width="80%"
-               append-to-body>
+    <el-dialog :close-on-click-modal="false" v-show="open" :modal="open" :title="title" :visible="true" width="80%"
+               @close="cancel" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="标题" prop="articleTitle">
           <el-input v-model="form.articleTitle" placeholder="请输入文章标题"/>
         </el-form-item>
         <el-form-item label="内容">
-          <!--          v-if="open"-->
-          <qy-editor ref="qyEditor" v-model="content"/>
+          <qy-editor v-model="content"/>
         </el-form-item>
         <el-form-item label="文章固定链接" prop="articleUrl">
           <el-input v-model="form.articleUrl" placeholder="请输入文章固定访问地址"/>
@@ -156,7 +155,7 @@
 </template>
 
 <script>
-import {addArticles, delArticles, getArticles, listArticles, updateArticles} from "@/api/web/articles";
+import {addArticles, delArticles, getArticles, listArticles, updateArticles} from "@/api/blog/articles";
 
 export default {
   name: "Articles",
@@ -306,10 +305,13 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('web/articles/export', {
+      this.download('blog/articles/export', {
         ...this.queryParams
       }, `articles_${new Date().getTime()}.xlsx`)
     }
   }
 };
 </script>
+<style scoped lang="scss">
+
+</style>

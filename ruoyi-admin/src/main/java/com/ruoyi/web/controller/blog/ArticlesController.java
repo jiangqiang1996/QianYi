@@ -29,7 +29,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2022-06-17
  */
 @RestController
-@RequestMapping("/web/articles")
+@RequestMapping("/blog/articles")
 public class ArticlesController extends BaseController
 {
     @Autowired
@@ -38,7 +38,7 @@ public class ArticlesController extends BaseController
     /**
      * 查询文章新增列表
      */
-    @PreAuthorize("@ss.hasPermi('web:articles:list')")
+    @PreAuthorize("@ss.hasPermi('blog:articles:list')")
     @GetMapping("/list")
     public TableDataInfo list(Articles articles)
     {
@@ -50,7 +50,7 @@ public class ArticlesController extends BaseController
     /**
      * 导出文章新增列表
      */
-    @PreAuthorize("@ss.hasPermi('web:articles:export')")
+    @PreAuthorize("@ss.hasPermi('blog:articles:export')")
     @Log(title = "文章新增", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, Articles articles)
@@ -63,7 +63,7 @@ public class ArticlesController extends BaseController
     /**
      * 获取文章新增详细信息
      */
-    @PreAuthorize("@ss.hasPermi('web:articles:query')")
+    @PreAuthorize("@ss.hasPermi('blog:articles:query')")
     @GetMapping(value = "/{articleId}")
     public AjaxResult getInfo(@PathVariable("articleId") Long articleId) {
         return AjaxResult.success(articlesService.getById(articleId));
@@ -72,7 +72,7 @@ public class ArticlesController extends BaseController
     /**
      * 新增文章新增
      */
-    @PreAuthorize("@ss.hasPermi('web:articles:add')")
+    @PreAuthorize("@ss.hasPermi('blog:articles:add')")
     @Log(title = "文章新增", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Articles articles) {
@@ -82,7 +82,7 @@ public class ArticlesController extends BaseController
     /**
      * 修改文章新增
      */
-    @PreAuthorize("@ss.hasPermi('web:articles:edit')")
+    @PreAuthorize("@ss.hasPermi('blog:articles:edit')")
     @Log(title = "文章新增", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Articles articles) {
@@ -92,7 +92,7 @@ public class ArticlesController extends BaseController
     /**
      * 删除文章新增
      */
-    @PreAuthorize("@ss.hasPermi('web:articles:remove')")
+    @PreAuthorize("@ss.hasPermi('blog:articles:remove')")
     @Log(title = "文章新增", businessType = BusinessType.DELETE)
     @DeleteMapping("/{articleIds}")
     public AjaxResult remove(@PathVariable Long[] articleIds) {

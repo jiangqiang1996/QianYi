@@ -206,8 +206,9 @@
     <file-upload v-model="form.${field}"/>
   </el-form-item>
 #elseif($column.htmlType == "editor")
+  #set($editor=true)
   <el-form-item label="${comment}">
-    <qy-editor v-model="form.${field}" :min-height="192"/>
+    <qy-editor v-model="content"/>
   </el-form-item>
 #elseif($column.htmlType == "select" && "" != $dictType)
   <el-form-item label="${comment}" prop="${field}">
@@ -423,7 +424,10 @@
         ]#if($foreach.count != $columns.size()),#end
 #end
 #end
-      }
+      },
+      #if($editor)
+        content:{},
+      #end
     };
   },
   created() {
@@ -519,6 +523,8 @@
 #if($table.sub)
         this.${subclassName}List = response.data.${subclassName}List;
 #end
+        this.\$set(this.content, "text", this.form.textContent || "");
+        this.$set(this.content, "html", this.form.htmlContent || "");
         this.open = true;
         this.title = "修改${functionName}";
       });
@@ -527,6 +533,8 @@
     submitForm() {
       this.#[[$]]#refs["form"].validate(valid => {
         if (valid) {
+          this.form.textContent = this.content.text;
+          this.form.htmlContent = this.content.html;
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
           this.form.$column.javaField = this.form.${column.javaField}.join(",");

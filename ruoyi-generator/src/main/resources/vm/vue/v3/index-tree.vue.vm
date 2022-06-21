@@ -197,7 +197,7 @@
   </el-form-item>
 #elseif($column.htmlType == "editor")
   <el-form-item label="${comment}">
-    <qy-editor v-model="form.${field}" :min-height="192"/>
+    <qy-editor v-model="form.${field}" />
   </el-form-item>
 #elseif($column.htmlType == "select" && "" != $dictType)
   <el-form-item label="${comment}" prop="${field}">

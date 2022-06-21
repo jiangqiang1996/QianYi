@@ -39,17 +39,17 @@ public class Articles extends BaseEntity {
      * 文章标题
      */
     @Excel(name = "文章标题" )
-    @TableField("storage_title" )
+    @TableField("article_title" )
     @ApiModelProperty("文章标题" )
-    private String storageTitle;
+    private String articleTitle;
 
     /**
      * 文章原始内容
      */
     @Excel(name = "文章原始内容" )
-    @TableField("original_content" )
+    @TableField("text_content" )
     @ApiModelProperty("文章原始内容" )
-    private String originalContent;
+    private String textContent;
 
     /**
      * 文章html内容
@@ -95,8 +95,8 @@ public class Articles extends BaseEntity {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("articleId" , getArticleId())
-                .append("storageTitle" , getStorageTitle())
-                .append("originalContent" , getOriginalContent())
+                .append("articleTitle" , getArticleTitle())
+                .append("textContent" , getTextContent())
                 .append("htmlContent" , getHtmlContent())
                 .append("articleUrl" , getArticleUrl())
                 .append("categoryId" , getCategoryId())

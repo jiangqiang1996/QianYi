@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="文章标题" prop="storageTitle">
+      <el-form-item label="文章标题" prop="articleTitle">
         <el-input
-          v-model="queryParams.storageTitle"
+          v-model="queryParams.articleTitle"
           placeholder="请输入文章标题"
           clearable
           @keyup.enter.native="handleQuery"
@@ -86,14 +86,14 @@
     </el-row>
 
     <el-table v-loading="loading" :data="articlesList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="文章id" align="center" prop="articleId" />
-      <el-table-column label="标题" align="center" prop="storageTitle" />
-<!--      <el-table-column label="内容" align="center" prop="originalContent" />-->
-<!--      <el-table-column label="文章html内容" align="center" prop="htmlContent" />-->
-<!--      <el-table-column label="文章固定链接" align="center" prop="articleUrl" />-->
-      <el-table-column label="文章分类" align="center" prop="categoryId" />
-<!--      <el-table-column label="文章标签id组成的字符串" align="center" prop="tagIds" />-->
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="文章id" align="center" prop="articleId"/>
+      <el-table-column label="标题" align="center" prop="articleTitle"/>
+      <!--      <el-table-column label="内容" align="center" prop="textContent" />-->
+      <!--      <el-table-column label="文章html内容" align="center" prop="htmlContent" />-->
+      <!--      <el-table-column label="文章固定链接" align="center" prop="articleUrl" />-->
+      <el-table-column label="文章分类" align="center" prop="categoryId"/>
+      <!--      <el-table-column label="文章标签id组成的字符串" align="center" prop="tagIds" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -102,7 +102,8 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['web:articles:edit']"
-          >修改</el-button>
+          >修改
+          </el-button>
           <el-button
             size="mini"
             type="text"
@@ -123,22 +124,21 @@
     />
 
     <!-- 添加或修改文章新增对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="80%" append-to-body>
+    <el-dialog :close-on-click-modal="false" :title="title" :visible.sync="open" width="80%"
+               append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="标题" prop="storageTitle">
-          <el-input v-model="form.storageTitle" placeholder="请输入文章标题" />
+        <el-form-item label="标题" prop="articleTitle">
+          <el-input v-model="form.articleTitle" placeholder="请输入文章标题"/>
         </el-form-item>
         <el-form-item label="内容">
-          <editor v-model="form.originalContent" :min-height="192"/>
+          <!--          v-if="open"-->
+          <qy-editor ref="qyEditor" v-model="content"/>
         </el-form-item>
-<!--        <el-form-item label="文章html内容">-->
-<!--          <editor v-model="form.htmlContent" :min-height="192"/>-->
-<!--        </el-form-item>-->
         <el-form-item label="文章固定链接" prop="articleUrl">
-          <el-input v-model="form.articleUrl" placeholder="请输入文章固定访问地址" />
+          <el-input v-model="form.articleUrl" placeholder="请输入文章固定访问地址"/>
         </el-form-item>
         <el-form-item label="文章分类" prop="categoryId">
-          <el-input v-model="form.categoryId" placeholder="请输入文章分类" />
+          <el-input v-model="form.categoryId" placeholder="请输入文章分类"/>
         </el-form-item>
         <el-form-item label="文章标签id组成的字符串" prop="tagIds">
           <el-input v-model="form.tagIds" placeholder="请输入文章标签" />
@@ -156,7 +156,7 @@
 </template>
 
 <script>
-import { listArticles, getArticles, delArticles, addArticles, updateArticles } from "@/api/web/articles";
+import {addArticles, delArticles, getArticles, listArticles, updateArticles} from "@/api/web/articles";
 
 export default {
   name: "Articles",
@@ -184,8 +184,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        storageTitle: null,
-        originalContent: null,
+        articleTitle: null,
+        textContent: null,
         htmlContent: null,
         articleUrl: null,
         categoryId: null,
@@ -195,10 +195,11 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        storageTitle: [
-          { required: true, message: "文章标题不能为空", trigger: "blur" }
+        articleTitle: [
+          {required: true, message: "文章标题不能为空", trigger: "blur"}
         ],
-      }
+      },
+      content: {},
     };
   },
   created() {
@@ -223,8 +224,8 @@ export default {
     reset() {
       this.form = {
         articleId: null,
-        storageTitle: null,
-        originalContent: null,
+        articleTitle: null,
+        textContent: null,
         htmlContent: null,
         articleUrl: null,
         categoryId: null,
@@ -257,7 +258,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加文章新增";
+      this.title = "新增文章";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -265,14 +266,18 @@ export default {
       const articleId = row.articleId || this.ids
       getArticles(articleId).then(response => {
         this.form = response.data;
+        this.$set(this.content, "text", this.form.textContent || "");
+        this.$set(this.content, "html", this.form.htmlContent || "");
         this.open = true;
-        this.title = "修改文章新增";
+        this.title = "修改文章";
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.textContent = this.content.text;
+          this.form.htmlContent = this.content.html;
           if (this.form.articleId != null) {
             updateArticles(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");

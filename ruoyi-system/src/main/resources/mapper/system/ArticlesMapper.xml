@@ -6,8 +6,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="Articles" id="ArticlesResult">
         <result property="articleId"    column="article_id"    />
-        <result property="storageTitle"    column="storage_title"    />
-        <result property="originalContent"    column="original_content"    />
+        <result property="articleTitle"    column="article_title"    />
+        <result property="textContent"    column="text_content"    />
         <result property="htmlContent"    column="html_content"    />
         <result property="articleUrl"    column="article_url"    />
         <result property="categoryId"    column="category_id"    />
@@ -20,14 +20,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectArticlesVo">
-        select article_id, storage_title, original_content, html_content, article_url, category_id, tag_ids, del_flag, create_by, create_time, update_by, update_time from qy_articles
+        select article_id, article_title, text_content, html_content, article_url, category_id, tag_ids, del_flag, create_by, create_time, update_by, update_time from qy_articles
     </sql>
 
     <select id="selectArticlesList" parameterType="Articles" resultMap="ArticlesResult">
         <include refid="selectArticlesVo"/>
         <where>
-            <if test="storageTitle != null  and storageTitle != ''"> and storage_title = #{storageTitle}</if>
-            <if test="originalContent != null  and originalContent != ''"> and original_content like concat('%', #{originalContent}, '%')</if>
+            <if test="articleTitle != null  and articleTitle != ''"> and article_title = #{articleTitle}</if>
+            <if test="textContent != null  and textContent != ''"> and text_content like concat('%', #{textContent}, '%')</if>
             <if test="htmlContent != null  and htmlContent != ''"> and html_content like concat('%', #{htmlContent}, '%')</if>
             <if test="articleUrl != null  and articleUrl != ''"> and article_url = #{articleUrl}</if>
             <if test="categoryId != null "> and category_id = #{categoryId}</if>

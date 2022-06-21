@@ -523,7 +523,7 @@
 #if($table.sub)
         this.${subclassName}List = response.data.${subclassName}List;
 #end
-        this.\$set(this.content, "text", this.form.textContent || "");
+        this.$set(this.content, "text", this.form.textContent || "");
         this.$set(this.content, "html", this.form.htmlContent || "");
         this.open = true;
         this.title = "修改${functionName}";

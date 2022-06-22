@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 #if($table.crud || $table.sub)
 import com.baomidou.mybatisplus.annotation.*;
-import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.core.domain.BaseDomain;
 #elseif($table.tree)
 import com.ruoyi.common.core.domain.TreeEntity;
 #end
@@ -24,7 +24,7 @@ import com.ruoyi.common.core.domain.TreeEntity;
  * @date ${datetime}
  */
 #if($table.crud || $table.sub)
-    #set($Entity="BaseEntity")
+    #set($Entity="BaseDomain")
 #elseif($table.tree)
     #set($Entity="TreeEntity")
 #end
@@ -41,30 +41,27 @@ private static final long serialVersionUID=1L;
 #foreach ($column in $columns)
     #if(!$table.isSuperColumn($column.javaField))
     /** $column.columnComment */
-        #if($column.list)
-            #set($parentheseIndex=$column.columnComment.indexOf("（"))
-            #if($parentheseIndex != -1)
-                #set($comment=$column.columnComment.substring(0, $parentheseIndex))
-            #else
-                #set($comment=$column.columnComment)
-            #end
-            #if($parentheseIndex != -1)
-            @Excel(name = "${comment}" , readConverterExp = "$column.readConverterExp()" )
-            #elseif($column.javaType == 'Date')
-            @JsonFormat(pattern = "yyyy-MM-dd" )
-            @Excel(name = "${comment}" , width = 30, dateFormat = "yyyy-MM-dd" )
-            #else
-            @Excel(name = "${comment}" )
-            #end
-        #end
-        #if($column.columnName == 'id')
-        @TableId(value = "id" , type = IdType.AUTO)
+        #set($parentheseIndex=$column.columnComment.indexOf("（"))
+        #if($parentheseIndex != -1)
+            #set($comment=$column.columnComment.substring(0, $parentheseIndex))
         #else
-        @TableField("$column.columnName" )
+            #set($comment=$column.columnComment)
         #end
-    @ApiModelProperty("${comment}" )
+        #if($parentheseIndex != -1)
+        @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+        #elseif($column.javaType == 'Date')
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        @Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd")
+        #else
+        @Excel(name = "${comment}")
+        #end
+        #if($column.columnName == $pkColumn.columnName)
+        @TableId(value = "$column.columnName", type = IdType.AUTO)
+        #else
+        @TableField("$column.columnName")
+        #end
+    @ApiModelProperty("${comment}")
     private $column.javaType $column.javaField ;
-
     #end
 #end
 #if($table.sub)

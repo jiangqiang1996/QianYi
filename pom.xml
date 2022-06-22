@@ -38,6 +38,7 @@
         <captcha-spring-boot-starter.version>1.2.7</captcha-spring-boot-starter.version>
         <lombok.version>1.18.24</lombok.version>
         <knife4j.version>3.0.3</knife4j.version>
+        <qianyi.version>1.0</qianyi.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -233,6 +234,17 @@
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>xin.jiangqiang</groupId>
+                <artifactId>qianyi-netdisc</artifactId>
+                <version>${qianyi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xin.jiangqiang</groupId>
+                <artifactId>qianyi-tools</artifactId>
+                <version>${qianyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -244,6 +256,7 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>qianyi-tools</module>
+        <module>qianyi-netdisc</module>
     </modules>
     <packaging>pom</packaging>
 

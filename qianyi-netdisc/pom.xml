@@ -11,13 +11,13 @@
     <packaging>jar</packaging>
 
     <groupId>xin.jiangqiang</groupId>
-    <artifactId>qianyi-tools</artifactId>
+    <artifactId>qianyi-netdisc</artifactId>
     <version>1.0</version>
 
-    <name>qianyi-tools</name>
+    <name>qianyi-netdisc</name>
     <url>http://www.qianyi.xin</url>
     <description>
-        图片视频音频处理模块
+        文件上传模块
     </description>
 
     <dependencies>
@@ -40,5 +40,4 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
 </project>

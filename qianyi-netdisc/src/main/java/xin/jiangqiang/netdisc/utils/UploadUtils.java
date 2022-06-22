@@ -31,8 +31,35 @@ public class UploadUtils {
         return genKey(file.getName());
     }
 
+    /**
+     * 获取访问链接
+     *
+     * @param key
+     * @return
+     */
     public static String getAccessUrl(String key) {
 
         return key;
+    }
+
+    /**
+     * 获取文件名后缀
+     *
+     * @param fileName
+     * @return
+     */
+
+    public static String getSuffix(String fileName) {
+        return FileUtil.getSuffix(fileName);
+    }
+
+    /**
+     * 获取文件名，不包含后缀
+     *
+     * @param fileName
+     * @return
+     */
+    public static String getPrefix(String fileName) {
+        return FileUtil.getPrefix(fileName);
     }
 }

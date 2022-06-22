@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.jiangqiang.netdisc.mapper.FilesMapper">
+
+    <resultMap type="Files" id="FilesResult">
+        <result property="fileId"    column="file_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="suffix"    column="suffix"    />
+        <result property="size"    column="size"    />
+        <result property="mimeType"    column="mime_type"    />
+        <result property="storageId"    column="storage_id"    />
+        <result property="uploadPath"    column="upload_path"    />
+        <result property="fileKey"    column="file_key"    />
+        <result property="isdir"    column="isDir"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="isPublic"    column="is_public"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFilesVo">
+        select file_id, file_name, suffix, size, mime_type, storage_id, upload_path, file_key, isDir, parent_id, is_public, del_flag, create_by, create_time, update_by, update_time from qy_files
+    </sql>
+
+    <select id="selectFilesList" parameterType="Files" resultMap="FilesResult">
+        <include refid="selectFilesVo"/>
+        <where>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="suffix != null  and suffix != ''"> and suffix = #{suffix}</if>
+            <if test="size != null "> and size = #{size}</if>
+            <if test="mimeType != null  and mimeType != ''"> and mime_type = #{mimeType}</if>
+            <if test="storageId != null "> and storage_id = #{storageId}</if>
+            <if test="uploadPath != null  and uploadPath != ''"> and upload_path = #{uploadPath}</if>
+            <if test="fileKey != null  and fileKey != ''"> and file_key = #{fileKey}</if>
+            <if test="isdir != null "> and isDir = #{isdir}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="isPublic != null "> and is_public = #{isPublic}</if>
+            <if test="delFlag != null">and del_flag = #{delFlag}</if>
+            <if test="delFlag == null">and del_flag = 0</if>
+        </where>
+    </select>
+
+</mapper>

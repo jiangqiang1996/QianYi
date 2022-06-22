@@ -94,7 +94,10 @@ mybatis-plus:
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     # 加载全局的配置文件
     configLocation: classpath:mybatis/mybatis-config.xml
-
+    global-config:
+      db-config:
+        logic-delete-value: 2 # 逻辑已删除值(默认为 1)
+        logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 # PageHelper分页插件
 pagehelper:
   helperDialect: mysql

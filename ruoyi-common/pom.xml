@@ -162,14 +162,6 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>xin.jiangqiang</groupId>
-            <artifactId>qianyi-netdisc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>xin.jiangqiang</groupId>
-            <artifactId>qianyi-tools</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

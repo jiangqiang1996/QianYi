@@ -1,30 +1,36 @@
 package com.ruoyi.generator.util;
 
-import java.util.Arrays;
-
-import org.apache.commons.lang3.RegExUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.generator.config.GenConfig;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
+import org.apache.commons.lang3.RegExUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 /**
  * 代码生成器 工具类
  *
  * @author ruoyi
  */
+@Component
 public class GenUtils {
+    @Autowired
+    GenConfig genConfig;
+
     /**
      * 初始化表信息
      */
-    public static void initTable(GenTable genTable, String operName) {
+    public void initTable(GenTable genTable, String operName) {
         genTable.setClassName(convertClassName(genTable.getTableName()));
-        genTable.setPackageName(GenConfig.getPackageName());
-        genTable.setModuleName(getModuleName(GenConfig.getPackageName()));
+        genTable.setPackageName(genConfig.getPackageName());
+        genTable.setModuleName(getModuleName(genConfig.getPackageName()));
         genTable.setBusinessName(getBusinessName(genTable.getTableName()));
         genTable.setFunctionName(replaceText(genTable.getTableComment()));
-        genTable.setFunctionAuthor(GenConfig.getAuthor());
+        genTable.setFunctionAuthor(genConfig.getAuthor());
         genTable.setCreateBy(operName);
     }
 
@@ -152,9 +158,9 @@ public class GenUtils {
      * @param tableName 表名称
      * @return 类名
      */
-    public static String convertClassName(String tableName) {
-        boolean autoRemovePre = GenConfig.getAutoRemovePre();
-        String tablePrefix = GenConfig.getTablePrefix();
+    public String convertClassName(String tableName) {
+        boolean autoRemovePre = genConfig.isAutoRemovePre();
+        String tablePrefix = genConfig.getTablePrefix();
         if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix)) {
             String[] searchList = StringUtils.split(tablePrefix, ",");
             tableName = replaceFirst(tableName, searchList);

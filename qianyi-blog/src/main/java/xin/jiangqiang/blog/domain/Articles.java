@@ -1,4 +1,4 @@
-package com.ruoyi.system.domain;
+package xin.jiangqiang.blog.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

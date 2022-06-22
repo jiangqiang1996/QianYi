@@ -237,6 +237,11 @@
 
             <dependency>
                 <groupId>xin.jiangqiang</groupId>
+                <artifactId>qianyi-blog</artifactId>
+                <version>${qianyi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xin.jiangqiang</groupId>
                 <artifactId>qianyi-netdisc</artifactId>
                 <version>${qianyi.version}</version>
             </dependency>
@@ -256,6 +261,7 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>qianyi-tools</module>
+        <module>qianyi-blog</module>
         <module>qianyi-netdisc</module>
     </modules>
     <packaging>pom</packaging>

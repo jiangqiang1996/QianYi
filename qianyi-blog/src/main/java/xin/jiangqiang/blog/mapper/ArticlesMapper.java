@@ -1,7 +1,7 @@
-package com.ruoyi.system.mapper;
+package xin.jiangqiang.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ruoyi.system.domain.Articles;
+import xin.jiangqiang.blog.domain.Articles;
 
 import java.util.List;
 

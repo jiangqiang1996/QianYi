@@ -1,7 +1,7 @@
-package com.ruoyi.system.service;
+package xin.jiangqiang.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ruoyi.system.domain.Articles;
+import xin.jiangqiang.blog.domain.Articles;
 
 import java.util.List;
 

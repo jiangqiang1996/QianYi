@@ -1,10 +1,10 @@
-package com.ruoyi.system.service.impl;
+package xin.jiangqiang.blog.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.system.domain.Articles;
-import com.ruoyi.system.mapper.ArticlesMapper;
-import com.ruoyi.system.service.IArticlesService;
 import org.springframework.stereotype.Service;
+import xin.jiangqiang.blog.domain.Articles;
+import xin.jiangqiang.blog.mapper.ArticlesMapper;
+import xin.jiangqiang.blog.service.IArticlesService;
 
 import java.util.List;
 

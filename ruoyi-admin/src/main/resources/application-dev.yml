@@ -2,7 +2,7 @@
 ruoyi:
   # 实例演示开关
   demoEnabled: true
-  # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath） todo 此配置将不再使用，后期会删除
   profile: D:/cache/uploadPath
   # 获取ip地址开关
   addressEnabled: false
@@ -10,6 +10,16 @@ ruoyi:
   captchaType: math
   #密码加密传输时使用的Rsa私钥
   privateKey: MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAqhHyZfSsYourNxaY7Nt+PrgrxkiA50efORdI5U5lsW79MmFnusUA355oaSXcLhu5xxB38SMSyP2KvuKNPuH3owIDAQABAkAfoiLyL+Z4lf4Myxk6xUDgLaWGximj20CUf+5BKKnlrK+Ed8gAkM0HqoTt2UZwA5E2MzS4EI2gjfQhz5X28uqxAiEA3wNFxfrCZlSZHb0gn2zDpWowcSxQAgiCstxGUoOqlW8CIQDDOerGKH5OmCJ4Z21v+F25WaHYPxCFMvwxpcw99EcvDQIgIdhDTIqD2jfYjPTY8Jj3EDGPbH2HHuffvflECt3Ek60CIQCFRlCkHpi7hthhYhovyloRYsM+IS9h/0BzlEAuO0ktMQIgSPT3aFAgJYwKpqRYKlLDVcflZFCKY7u3UP8iWi1Qw0Y=
+
+qianyi:
+  netdisc:
+    #所有文件存放的根目录
+    baseDir:  D:/tmp/ruoyi/
+    #文件缓存目录，此处填写相对路径，实际存放路径为baseDir+cache
+    cachePath: cache
+    #文件上传存放目录，此处填写相对路径，实际存放路径为baseDir+cache
+    uploadPath: uploadPath
+
 # 滑块验证码
 aj:
   captcha:

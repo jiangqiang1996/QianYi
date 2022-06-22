@@ -40,6 +40,7 @@ export default {
         text: this.value.text,
         html: this.value.html,
       },//编辑器的值，赋予初始值
+      uploadUrl: process.env.VUE_APP_BASE_API + "/common/uploads", // 上传的图片服务器地址
       headers: {
         Authorization: "Bearer " + getToken(),
       },
@@ -118,7 +119,22 @@ export default {
           lineNumber: true,//启用行号
         }
       },
-      upload: {},
+      upload: {
+        url: this.uploadUrl,
+        max: 1024 * 1024 * 1024,
+        headers: this.headers,
+        multiple: true,//上传多个文件
+        fieldName: "files",//上传字段名
+        format: (files, responseText) => {
+          // console.log(files)
+          // console.log(responseText)
+        },
+        validate: (files) => {
+          // console.log("validate")
+          // console.log(files)
+        },
+
+      },
       ...this.options//传入的配置会覆盖原有配置
     })
   },

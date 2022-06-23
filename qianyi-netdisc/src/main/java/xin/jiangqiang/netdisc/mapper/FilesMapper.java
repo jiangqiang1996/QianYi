@@ -1,8 +1,9 @@
 package xin.jiangqiang.netdisc.mapper;
 
-import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import xin.jiangqiang.netdisc.domain.Files;
+
+import java.util.List;
 
 /**
  * 文件Mapper接口
@@ -10,8 +11,7 @@ import xin.jiangqiang.netdisc.domain.Files;
  * @author JiangQiang
  * @date 2022-06-22
  */
-public interface FilesMapper extends BaseMapper<Files>
-{
+public interface FilesMapper extends BaseMapper<Files> {
     /**
      * 查询文件列表
      *

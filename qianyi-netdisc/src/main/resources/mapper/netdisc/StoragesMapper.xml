@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.jiangqiang.netdisc.mapper.StoragesMapper">
+
+    <resultMap type="Storages" id="StoragesResult">
+        <result property="storageId" column="storage_id"/>
+        <result property="storageName" column="storage_name"/>
+        <result property="storageConfig" column="storage_config"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectStoragesVo">
+        select storage_id,
+               storage_name,
+               storage_config,
+               del_flag,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from qy_storages
+    </sql>
+
+    <select id="selectStoragesList" parameterType="Storages" resultMap="StoragesResult">
+        <include refid="selectStoragesVo"/>
+        <where>
+            <if test="storageName != null  and storageName != ''">and storage_name like concat('%', #{storageName},
+                '%')
+            </if>
+            <if test="storageConfig != null  and storageConfig != ''">and storage_config = #{storageConfig}</if>
+            <if test="delFlag != null">and del_flag = #{delFlag}</if>
+            <if test="delFlag == null">and del_flag = 0</if>
+        </where>
+    </select>
+
+</mapper>

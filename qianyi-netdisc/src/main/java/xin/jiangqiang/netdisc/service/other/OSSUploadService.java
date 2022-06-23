@@ -1,6 +1,7 @@
 package xin.jiangqiang.netdisc.service.other;
 
 import cn.hutool.core.io.FileUtil;
+import com.aliyun.oss.OSS;
 import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +20,7 @@ import java.nio.file.Paths;
  * @author jiangqiang
  * @date 2022-06-22
  */
-public class LocalUploadService extends AbstractUploadService<Object> {
+public class OSSUploadService extends AbstractUploadService<OSS> {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AjaxResult singleUpload(MultipartFile file, Files fileObj) {
@@ -80,7 +81,7 @@ public class LocalUploadService extends AbstractUploadService<Object> {
                 fileObj.setParentId(-1L);
                 fileObj.setIsPublic(false);
             } catch (IOException e) {
-               result.addErrFile(originalFilename);
+                result.addErrFile(originalFilename);
             }
         }
         return result.success();

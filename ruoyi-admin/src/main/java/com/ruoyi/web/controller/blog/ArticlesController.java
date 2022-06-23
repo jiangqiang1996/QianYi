@@ -76,7 +76,6 @@ public class ArticlesController extends BaseController
     @Log(title = "文章新增", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Articles articles) {
-        articles.setCreateBy(getUsername());
         return toAjax(articlesService.save(articles));
     }
 
@@ -87,7 +86,6 @@ public class ArticlesController extends BaseController
     @Log(title = "文章新增", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Articles articles) {
-        articles.setUpdateBy(getUsername());
         return toAjax(articlesService.updateById(articles));
     }
 

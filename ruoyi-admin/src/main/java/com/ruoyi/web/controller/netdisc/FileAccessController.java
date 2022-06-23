@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.netdisc;
 
+import com.ruoyi.common.core.controller.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2022-06-21
  */
 @Controller
-@RequestMapping("/net-disk")
-public class FileAccessController {
+@RequestMapping("/net-disc")
+public class FileAccessController extends BaseController {
 
     /**
      * 访问文件

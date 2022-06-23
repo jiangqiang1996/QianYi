@@ -1,12 +1,13 @@
 package xin.jiangqiang;
 
 import com.ruoyi.RuoYiApplication;
-import com.ruoyi.generator.config.GenConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import xin.jiangqiang.netdisc.base.AbstractUploadService;
+import xin.jiangqiang.netdisc.service.other.UploadServiceManagement;
 
 /**
  * @author jiangqiang
@@ -19,10 +20,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 public class Test1 {
     @Autowired
-    GenConfig genConfig;
+    UploadServiceManagement serviceManagement;
 
     @Test
     public void test() {
-        System.out.println(genConfig.isAutoRemovePre());
+        System.out.println(serviceManagement);
+        System.out.println(((AbstractUploadService)serviceManagement.getService(1L)).getQianYiConfig());
     }
 }

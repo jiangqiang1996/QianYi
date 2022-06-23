@@ -39,6 +39,10 @@
         <lombok.version>1.18.24</lombok.version>
         <knife4j.version>3.0.3</knife4j.version>
         <qianyi.version>1.0</qianyi.version>
+        <aliyun-sdk-oss.version>3.11.2</aliyun-sdk-oss.version>
+        <aliyun-java-sdk-sts.version>3.0.2</aliyun-java-sdk-sts.version>
+        <aliyun-java-sdk-core.version>4.5.18</aliyun-java-sdk-core.version>
+        <cos_api.version>5.6.24</cos_api.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -250,6 +254,31 @@
                 <artifactId>qianyi-tools</artifactId>
                 <version>${qianyi.version}</version>
             </dependency>
+
+            <!-- aliyun -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun-java-sdk-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-sdk-oss.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-sts</artifactId>
+                <version>${aliyun-java-sdk-sts.version}</version>
+            </dependency>
+
+            <!--腾讯云cos开发sdk -->
+            <dependency>
+                <groupId>com.qcloud</groupId>
+                <artifactId>cos_api</artifactId>
+                <version>${cos_api.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

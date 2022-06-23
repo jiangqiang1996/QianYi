@@ -2,6 +2,7 @@ package ${packageName}.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.*;
+import lombok.experimental.Accessors;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 #foreach ($import in $importList)
@@ -31,6 +32,7 @@ import com.ruoyi.common.core.domain.TreeEntity;
 @Builder
 @ApiModel
 @Data
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)

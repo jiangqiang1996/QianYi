@@ -1,17 +1,12 @@
 package xin.jiangqiang.netdisc.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseDomain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 文件对象 qy_files
@@ -50,7 +45,7 @@ public class Files extends BaseDomain {
      * 文件名后缀，不包含小数点
      */
     @Excel(name = "文件名后缀，不包含小数点")
-    @TableField("suffix")
+    @TableField(value = "suffix", fill = FieldFill.INSERT)
     @ApiModelProperty("文件名后缀，不包含小数点")
     private String suffix;
 
@@ -74,7 +69,7 @@ public class Files extends BaseDomain {
      * 存储类型id，OSS/本地
      */
     @Excel(name = "存储类型id，OSS/本地")
-    @TableField("storage_id")
+    @TableField(value = "storage_id", fill = FieldFill.INSERT)
     @ApiModelProperty("存储类型id，OSS/本地")
     private Long storageId;
 
@@ -105,38 +100,30 @@ public class Files extends BaseDomain {
     /**
      * 父级目录id，如果为0则为根目录
      */
-    @Excel(name = "父级目录id，如果为0则为根目录")
-    @TableField("parent_id")
-    @ApiModelProperty("父级目录id，如果为0则为根目录")
+    @Excel(name = "父级目录id，如果为0则为根目录，-1为默认上传目录，-2为网盘默认使用目录")
+    @TableField(value = "parent_id", fill = FieldFill.INSERT)
+    @ApiModelProperty("父级目录id，如果为0则为根目录，-1为默认上传目录，-2为网盘默认使用目录")
     private Long parentId;
+
+    /**
+     * 父级目录id，如果为0则为根目录
+     */
+    @Excel(name = "同一个目录下，不可重复")
+    @TableField(value = "random_key")
+    @ApiModelProperty("同一个目录下，不可重复")
+    private String randomKey;
 
     /**
      * 是否公开，1表示所有人可以访问，0表示需要访问权限
      */
     @Excel(name = "是否公开，1表示所有人可以访问，0表示需要访问权限")
-    @TableField("is_public")
+    @TableField(value = "is_public", fill = FieldFill.INSERT)
     @ApiModelProperty("是否公开，1表示所有人可以访问，0表示需要访问权限")
     private Boolean isPublic;
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("fileId", getFileId())
-                .append("fileName", getFileName())
-                .append("suffix", getSuffix())
-                .append("size", getSize())
-                .append("mimeType", getMimeType())
-                .append("storageId", getStorageId())
-                .append("uploadPath", getUploadPath())
-                .append("fileKey", getFileKey())
-                .append("isDir", getIsDir())
-                .append("parentId", getParentId())
-                .append("isPublic", getIsPublic())
-                .append("delFlag", getDelFlag())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .toString();
-    }
+    @Excel(name = "文件摘要算法计算得出的唯一值")
+    @TableField(value = "identifier")
+    @ApiModelProperty("文件摘要算法计算得出的唯一值")
+    private String identifier;
+
 }

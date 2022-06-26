@@ -1,6 +1,8 @@
 package xin.jiangqiang.netdisc.base;
 
 import com.ruoyi.common.core.domain.AjaxResult;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,13 @@ import java.util.Map;
 public class UploadResult {
     private final List<Map<String, String>> succMap = new ArrayList<>();
     private final List<String> errFiles = new ArrayList<>();
+
+    @Setter
+    @Getter
+    private String errMsg;
+    @Setter
+    @Getter
+    private Boolean needMerge = false;//是否需要合并
 
     public void addSuccessFile(String fileName, String fileUrl) {
         Map<String, String> map = new HashMap<>();
@@ -34,6 +43,7 @@ public class UploadResult {
         Map<String, Object> data = new HashMap<>();
         data.put("errFiles", errFiles);
         data.put("succMap", succMap);
+        data.put("needMerge", needMerge);
         return AjaxResult.success(data);
     }
 
@@ -44,9 +54,21 @@ public class UploadResult {
      * @return
      */
     public AjaxResult error(String msg) {
+        this.errMsg = msg;
         Map<String, Object> data = new HashMap<>();
         data.put("errFiles", errFiles);
         data.put("succMap", succMap);
-        return AjaxResult.error(msg, data);
+        return AjaxResult.error(this.errMsg, data);
+    }
+
+    public AjaxResult toResult() {
+        if (this.errMsg == null) {
+            return success();
+        } else {
+            Map<String, Object> data = new HashMap<>();
+            data.put("errFiles", errFiles);
+            data.put("succMap", succMap);
+            return AjaxResult.error(this.errMsg, data);
+        }
     }
 }

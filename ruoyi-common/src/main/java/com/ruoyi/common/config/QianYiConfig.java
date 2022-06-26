@@ -1,7 +1,6 @@
 package com.ruoyi.common.config;
 
 import cn.hutool.core.io.FileUtil;
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -26,10 +25,18 @@ public class QianYiConfig {
     }
 
     public File getCacheDir() {
-        return FileUtil.file(netdisc.baseDir, netdisc.cachePath);
+        File file = FileUtil.file(netdisc.baseDir, netdisc.cachePath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return file;
     }
 
     public File getUploadDir() {
-        return FileUtil.file(netdisc.baseDir, netdisc.uploadPath);
+        File file = FileUtil.file(netdisc.baseDir, netdisc.uploadPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return file;
     }
 }

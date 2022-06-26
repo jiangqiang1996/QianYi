@@ -39,6 +39,8 @@ public class UploadServiceConfiguration {
                     localUploadService.setQianYiConfig(qianYiConfig);
                     localUploadService.setClient(null);
                     uploadServiceManagement.putService(storageId, localUploadService);
+                    /*id为空时，也是本地存储*/
+                    uploadServiceManagement.putService(null, localUploadService);
                     break;
                 case 2://阿里云
                     if (config.isValid()) {

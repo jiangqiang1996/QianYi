@@ -31,10 +31,23 @@ public class MybatisPlusMetaHandler implements MetaObjectHandler {
                 log.debug("自动插入 createBy");
                 this.setFieldValByName("createBy", username, metaObject);
             }
+
+            fillIfNull("storageId", 1L, metaObject);
+            fillIfNull("parentId", -1L, metaObject);
+            fillIfNull("isPublic", false, metaObject);
+            fillIfNull("suffix", "", metaObject);
         } catch (Exception e) {
             log.error("自动注入失败:{}", e.getMessage());
         }
 
+    }
+
+    void fillIfNull(String filedName, Object value, MetaObject metaObject) {
+        Object fieldValByName = getFieldValByName(filedName, metaObject);
+        if (null == fieldValByName && metaObject.hasSetter(filedName)) {
+            log.debug("自动插入 " + filedName);
+            setFieldValByName(filedName, value, metaObject);
+        }
     }
 
     public void updateFill(MetaObject metaObject) {

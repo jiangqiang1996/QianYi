@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view/>
+    <!-- 将上传组件全局注册 -->
+    <global-uploader></global-uploader>
   </div>
 </template>
 
 <script>
-export default  {
-  name:  'App',
+import globalUploader from '@/components/GlobalUpload'
+
+export default {
+  name: 'App',
+  components: {
+    globalUploader
+  },
     metaInfo() {
         return {
             title: this.$store.state.settings.dynamicTitle && this.$store.state.settings.title,

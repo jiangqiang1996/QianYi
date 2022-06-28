@@ -52,7 +52,7 @@ export default {
       chunkSize: 1024 * 1024, //分片大小，1MB
       storageId: 1,//存储方式，默认为1
       parentId: -1,//上传到此id对应的目录
-      showFileList: false,
+      showFileList: false,//默认不显示文件上传列表
       options: {
         target: process.env.VUE_APP_BASE_API + "/net-disc/patchUpload",
         testChunks: true,//测试分片是否存在，用于秒传

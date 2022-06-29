@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <div class="drag-drop" ref="drag-drop">
+    <div class="net-disc-content">
       <button ref="selectFile">选择文件</button>
       <button ref="selectDirectory">选择目录</button>
     </div>
-
-  </div>
 </template>
 
 <script>
@@ -23,9 +20,8 @@ export default {
 
   },
   mounted() {
-      this.uploader.assignBrowse(this.$refs.selectFile, false)
-      this.uploader.assignBrowse(this.$refs.selectDirectory, true)
-      this.uploader.assignDrop(this.$refs["drag-drop"])
+    this.uploader.assignBrowse(this.$refs.selectFile, false)
+    this.uploader.assignBrowse(this.$refs.selectDirectory, true)
   },
   computed: {
     ...mapGetters(["globalUploader", "uploader"]),

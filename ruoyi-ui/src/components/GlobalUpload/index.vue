@@ -1,5 +1,5 @@
 <template>
-  <uploader ref="uploader" :options="options" class="uploader"
+  <uploader ref="uploader" :options="options"
             @file-added="addFile"
             @files-added="addFiles"
             @file-success="onFileSuccess"
@@ -71,7 +71,6 @@ export default {
           waiting: '正在计算MD5值'
         },
         query: (file, chunk) => {
-          console.log(file)
           return {
             storageId: this.storageId,//存储方式，默认为1
             parentId: this.parentId,//上传到此id对应的目录
@@ -98,6 +97,13 @@ export default {
   mounted() {
     this.$store.dispatch('uploader/setGlobalUploader', this);
     this.$store.dispatch('uploader/setUploader', this.$refs["uploader"].uploader);
+    this.$refs["uploader"].uploader.assignDrop(document.body)
+    this.$refs["uploader"].uploader.on('dragenter', () => {
+
+    })
+    this.$refs["uploader"].uploader.on('dragleave', () => {
+
+    })
   },
   methods: {
     randomNum(n) {
@@ -109,7 +115,6 @@ export default {
     },
     addFile(file) {
       this.computedMD5(file);
-
     },
     addFiles(files) {
       const randomKey = Date.now() + this.randomNum(10);
@@ -239,12 +244,9 @@ export default {
 <style scoped lang="scss">
 .uploader {
   width: 100%;
-  padding: 15px;
+  padding: 0;
+  margin: 0;
   font-size: 12px;
-
-  .uploader-drop {
-    background-color: #FFFFFF;
-  }
 
   .pop-btn {
     position: fixed;

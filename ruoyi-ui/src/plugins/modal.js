@@ -1,4 +1,5 @@
-import { Message, MessageBox, Notification, Loading } from 'element-ui'
+import {Loading, Message, MessageBox, Notification} from 'element-ui'
+import QyModal from './qy-modal'
 
 let loadingInstance;
 
@@ -79,5 +80,17 @@ export default {
   // 关闭遮罩层
   closeLoading() {
     loadingInstance.close();
+  },
+  showUploadModal(message) {
+    QyModal.show(message);
+  },
+  closeUploadModal() {
+    QyModal.close();
+  },
+  getUploadModalStatus() {
+    return QyModal.status();
+  },
+  getUploadModalInstance() {
+    return QyModal.uploadModalInstance();
   }
 }

@@ -1,6 +1,7 @@
 const state = {
   globalUploader: null,//全局上传组件
-  uploader: null//simple-uploader实例
+  uploader: null,//simple-uploader实例
+  currentDirectory: null
 }
 
 const mutations = {
@@ -9,7 +10,11 @@ const mutations = {
   },
   SET_UPLOADER: (state, uploader) => {
     state.uploader = uploader
+  },
+  SET_CURRENT_DIRECTORY: (state, currentDirectory) => {
+    state.currentDirectory = currentDirectory
   }
+
 }
 
 const actions = {
@@ -18,6 +23,10 @@ const actions = {
   },
   setUploader({commit}, uploader) {
     commit('SET_UPLOADER', uploader)
+  },
+  /*设置当前目录*/
+  setCurrentDirectory({commit}, currentDirectory) {
+    commit('SET_CURRENT_DIRECTORY', currentDirectory)
   }
 }
 

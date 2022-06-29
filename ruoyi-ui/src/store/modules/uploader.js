@@ -1,7 +1,10 @@
+const rootDir = {fileId: 0, fullFileName: "根目录"}
 const state = {
   globalUploader: null,//全局上传组件
   uploader: null,//simple-uploader实例
-  currentDirectory: null
+  path: [
+    rootDir
+  ]//存储目录路径id
 }
 
 const mutations = {
@@ -11,10 +14,12 @@ const mutations = {
   SET_UPLOADER: (state, uploader) => {
     state.uploader = uploader
   },
-  SET_CURRENT_DIRECTORY: (state, currentDirectory) => {
-    state.currentDirectory = currentDirectory
+  PUSH_LAST_FILE: (state, file) => {
+    state.path.push(file)
+  },
+  CLEAR_PATH: (state) => {
+    state.path = [rootDir]
   }
-
 }
 
 const actions = {
@@ -24,10 +29,28 @@ const actions = {
   setUploader({commit}, uploader) {
     commit('SET_UPLOADER', uploader)
   },
-  /*设置当前目录*/
-  setCurrentDirectory({commit}, currentDirectory) {
-    commit('SET_CURRENT_DIRECTORY', currentDirectory)
-  }
+  pushLastFile({commit}, file) {
+    commit('PUSH_LAST_FILE', file)
+  },
+  //获取当前目录对象
+  getLastFile({state}) {
+    return new Promise(resolve => {
+      resolve(state.path[state.path.length - 1])
+    })
+  },
+  //获取并取出当前目录对象
+  popLastFile({state}) {
+    return new Promise(resolve => {
+      if (state.path.length > 1) {
+        resolve(state.path.pop());
+      } else {
+        resolve();
+      }
+    });
+  },
+  clearPath({commit}) {
+    commit('CLEAR_PATH')
+  },
 }
 
 export default {

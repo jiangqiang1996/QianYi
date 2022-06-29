@@ -8,6 +8,7 @@
         <result property="fileId" column="file_id"/>
         <result property="fileName" column="file_name"/>
         <result property="suffix" column="suffix"/>
+        <result property="fullFileName" column="full_file_name"/>
         <result property="size" column="size"/>
         <result property="mimeType" column="mime_type"/>
         <result property="storageId" column="storage_id"/>
@@ -28,14 +29,20 @@
     <sql id="selectFilesVo">
         select file_id,
                file_name,
-               suffix, size, mime_type, storage_id, upload_path, file_key, is_dir, parent_id, random_key, identifier, is_public, del_flag, create_by, create_time, update_by, update_time
+               suffix,
+               CONCAT(file_name, IF(length(trim(suffix)) &lt; 1, '', '.'), suffix) AS full_file_name,
+            size, mime_type, storage_id, upload_path, file_key, is_dir, parent_id, random_key, identifier, is_public, del_flag, create_by, create_time, update_by, update_time
         from qy_files
     </sql>
 
     <select id="selectFilesList" parameterType="Files" resultMap="FilesResult">
         <include refid="selectFilesVo"/>
         <where>
-            <if test="fileName != null  and fileName != ''">and file_name like concat('%', #{fileName}, '%')</if>
+            <!--            <if test="fileName != null  and fileName != ''">and file_name like concat('%', #{fileName}, '%')</if>-->
+            <if test="fullFileName != null  and fullFileName != ''">
+                and CONCAT(file_name, IF(length(trim(suffix)) &lt;1, '', '.'), suffix) like concat('%',
+                #{fullFileName},'%')
+            </if>
             <if test="suffix != null  and suffix != ''">and suffix = #{suffix}</if>
             <if test="size != null ">and size = #{size}</if>
             <if test="mimeType != null  and mimeType != ''">and mime_type = #{mimeType}</if>
@@ -44,6 +51,7 @@
             <if test="fileKey != null  and fileKey != ''">and file_key = #{fileKey}</if>
             <if test="isDir != null ">and is_dir = #{isDir}</if>
             <if test="parentId != null ">and parent_id = #{parentId}</if>
+            <if test="parentId == null">and parent_id = 0</if>
             <if test="randomKey != null ">and random_key = #{randomKey}</if>
             <if test="identifier != null ">and identifier = #{identifier}</if>
             <if test="isPublic != null ">and is_public = #{isPublic}</if>

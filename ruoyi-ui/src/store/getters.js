@@ -16,6 +16,6 @@ const getters = {
   sidebarRouters: state => state.permission.sidebarRouters,
   globalUploader: state => state.uploader.globalUploader,
   uploader: state => state.uploader.uploader,
-  currentDirectory:state=>state.uploader.currentDirectory
+  path: state => state.uploader.path
 }
 export default getters

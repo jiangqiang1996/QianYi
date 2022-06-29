@@ -44,6 +44,7 @@
 import {getToken} from "@/utils/auth";
 import SparkMD5 from "spark-md5";
 import {mergeFile} from "@/api/net-disc/upload";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   data() {
@@ -51,7 +52,6 @@ export default {
       showDrop: false,//不显示拖拽区域
       chunkSize: 1024 * 1024, //分片大小，1MB
       storageId: 1,//存储方式，默认为1
-      parentId: -1,//上传到此id对应的目录
       showFileList: false,//默认不显示文件上传列表
       options: {
         target: process.env.VUE_APP_BASE_API + "/net-disc/patchUpload",
@@ -92,6 +92,21 @@ export default {
             .replace(/\sseconds?/, '秒')
         }
       },
+    }
+  },
+  ...mapActions({
+    getLastFile: 'uploader/getLastFile',
+  }),
+  computed: {
+   async parentId() {//上传到此id对应的目录
+     let currentFile = await this.getLastFile();
+      if (this.$router.currentRoute.name === 'Dir' && currentFile) {
+        console.log(currentFile.fileId)
+        return currentFile.fileId;
+      } else {
+        console.log(0)
+        return 0;
+      }
     }
   },
   mounted() {

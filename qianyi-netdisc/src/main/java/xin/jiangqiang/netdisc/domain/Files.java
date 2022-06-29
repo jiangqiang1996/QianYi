@@ -42,6 +42,14 @@ public class Files extends BaseDomain {
     private String fileName;
 
     /**
+     * 文件或目录原始名称，不包含后缀
+     */
+    @Excel(name = "完整文件或目录名")
+    @TableField(exist = false)
+    @ApiModelProperty("完整文件或目录名")
+    private String fullFileName;
+
+    /**
      * 文件名后缀，不包含小数点
      */
     @Excel(name = "文件名后缀，不包含小数点")
@@ -100,9 +108,9 @@ public class Files extends BaseDomain {
     /**
      * 父级目录id，如果为0则为根目录
      */
-    @Excel(name = "父级目录id，如果为0则为根目录，-1为默认上传目录，-2为网盘默认使用目录")
+    @Excel(name = "父级目录id，如果为0则为根目录，-1为博客系统默认上传目录")
     @TableField(value = "parent_id", fill = FieldFill.INSERT)
-    @ApiModelProperty("父级目录id，如果为0则为根目录，-1为默认上传目录，-2为网盘默认使用目录")
+    @ApiModelProperty("父级目录id，如果为0则为根目录，-1为博客系统默认上传目录")
     private Long parentId;
 
     /**

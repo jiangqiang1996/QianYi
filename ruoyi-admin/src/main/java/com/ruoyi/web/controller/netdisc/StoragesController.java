@@ -23,7 +23,7 @@ import java.util.List;
  * @date 2022-06-23
  */
 @RestController
-@RequestMapping("/netdisc/storages")
+@RequestMapping("/net-disc/storages")
 public class StoragesController extends BaseController {
     @Autowired
     private IStoragesService storagesService;

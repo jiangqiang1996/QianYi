@@ -40,7 +40,9 @@ import VueMeta from 'vue-meta'
 import DictData from '@/components/DictData'
 //文件上传组件
 import uploader from 'vue-simple-uploader'
-Vue.use(uploader)
+//基于elementUI增强的UI框架
+import Avue from '@smallwei/avue';
+import '@smallwei/avue/lib/index.css';
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -80,6 +82,9 @@ DictData.install()
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
+
+Vue.use(uploader)
+Vue.use(Avue);
 
 Vue.config.productionTip = false
 

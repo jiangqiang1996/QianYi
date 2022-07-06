@@ -23,7 +23,8 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
+    <avue-crud :data="filteredData" v-loadmore="handelLoadmore" :option="option"
+               :data-size="tableData.length"></avue-crud>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -93,10 +94,6 @@
         </el-button>
       </el-col>
     </el-row>
-    <avue-crud v-loading="loading" :data="filesList" :option="option"
-               :data-size="filesList.length"
-               @cell-dblclick="openDirectory"
-    ></avue-crud>
     <el-table v-loading="loading" :data="filesList" @selection-change="handleSelectionChange"
               @row-dblclick="openDirectory">
       <el-table-column type="selection" width="55" align="center"/>
@@ -166,174 +163,26 @@ export default {
   name: "Files",
   data() {
     return {
+      tableData: [],
       option: {
-        align: 'left',
-        menuType: this.menuType,
         height: 300,
+        expand: true,
+        selection: true,
         selectionFixed: false,
         expandFixed: false,
         menuFixed: false,
-        emptyText: '暂无文件，快去上传一个吧',
-        size: "medium",
-        selection: true,
-        rowKey: "fileId",
-        defaultSort: {prop: 'isDir', order: 'descending'},
-        column: [
-          {
-            label: '文件名',
-            prop: 'fullFileName',
-            minWidth: 200,
-            overHidden: true,
-            sortable: true,
-            click:(value,column)=>{
-              if (column.property === "fullFileName") {
-                console.log(column)
-                if (column.isDir) {//双击目录名，打开目录
-                  // this.pushLastFile(column)
-                  // this.getList()
-                } else {
-                  //双击文件名，预览文件
-                }
-              }
-            }
-          },
-          {
-            label: '上传时间',
-            prop: 'createTime',
-            minWidth: 200,
-            editDisabled: true,//不可编辑
-            editDisplay: false,//编辑时不可见
-          },
-          {
-            label: '修改时间',
-            prop: 'updateTime',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-          },
-          {
-            label: '文件大小',
-            prop: 'size',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            sortable: true,
-            formatter: (row, value, label, column) => {
-              if (value || value === 0) {
-                if (value < 1024) {
-                  return value + "B";
-                } else if (value < 1024 * 1024) {
-                  return value / 1024 + "KB"
-                } else if (value < 1024 * 1024 * 1024) {
-                  return value / 1024 / 1024 + "MB"
-                } else if (value < 1024 * 1024 * 1024 * 1024) {
-                  return value / 1024 / 1024 / 1024 + "GB"
-                } else {
-                  return value / 1024 / 1024 / 1024 / 1024 + "TB"
-                }
-              } else {
-                return "-";
-              }
-            }
-          },
-          {
-            label: 'id',
-            prop: 'fileId',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '文件名',//不包含后缀
-            prop: 'fileName',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '文件后缀',
-            prop: 'suffix',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '文件类型',
-            prop: 'mimeType',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '存储方式',
-            prop: 'storageId',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '服务端路径',
-            prop: 'uploadPath',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '文件的唯一key',
-            prop: 'fileKey',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '是否为目录',
-            prop: 'isDir',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '父级目录id',
-            prop: 'parentId',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '目录的随机key',
-            prop: 'randomKey',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: '访问权限',
-            prop: 'isPublic',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-          {
-            label: 'MD5值',
-            prop: 'identifier',
-            minWidth: 200,
-            editDisabled: true,
-            editDisplay: false,
-            hide: true,
-          },
-        ]
+        column: [{
+          label: '姓名',
+          prop: 'name',
+          width: 200,
+        }, {
+          label: '年龄',
+          prop: 'sex'
+        }]
       },
+      currentStartIndex: 0,
+      currentEndIndex: 20,
+
       // 遮罩层
       loading: true,
       // 选中数组
@@ -368,49 +217,66 @@ export default {
         randomKey: null,
         identifier: null,
         isPublic: null,
-      },
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {
-        fileName: [
-          {required: true, message: "文件或目录原始名称，不包含后缀不能为空", trigger: "blur"}
-        ],
-        suffix: [
-          {required: true, message: "文件名后缀，不包含小数点不能为空", trigger: "blur"}
-        ],
-        size: [
-          {required: true, message: "文件大小不能为空", trigger: "blur"}
-        ],
-        mimeType: [
-          {required: true, message: "文件传输类型不能为空", trigger: "change"}
-        ],
-        storageId: [
-          {required: true, message: "存储类型id，OSS/本地不能为空", trigger: "blur"}
-        ],
-        uploadPath: [
-          {required: true, message: "服务端存储路径不能为空", trigger: "blur"}
-        ],
-        fileKey: [
-          {required: true, message: "文件的唯一key不能为空", trigger: "blur"}
-        ],
-        isDir: [
-          {required: true, message: "是否为目录，0表示文件，1表示目录不能为空", trigger: "blur"}
-        ],
-        parentId: [
-          {required: true, message: "父级目录id，如果为0则为根目录不能为空", trigger: "blur"}
-        ],
-        isPublic: [
-          {required: true, message: "是否公开，1表示所有人可以访问，0表示需要访问权限不能为空", trigger: "blur"}
-        ],
-        createBy: [
-          {required: true, message: "创建者不能为空", trigger: "blur"}
-        ],
-      },
+      }
     };
+  },
+  directives: {
+    loadmore: {
+      componentUpdated: function (el, binding, vnode, oldVnode) {
+        // 设置默认溢出显示数量
+        var spillDataNum = 20;
+
+        // 设置隐藏函数
+        var timeout = false;
+        let setRowDisableNone = function (topNum, showRowNum, binding) {
+          if (timeout) {
+            clearTimeout(timeout);
+          }
+          timeout = setTimeout(() => {
+            binding.value.call(null, topNum, topNum + showRowNum + spillDataNum);
+          });
+        };
+        setTimeout(() => {
+          const dataSize = vnode.data.attrs['data-size'];
+          const oldDataSize = oldVnode.data.attrs['data-size'];
+          if (dataSize === oldDataSize) return;
+          const selectWrap = el.querySelector('.el-table__body-wrapper');
+          const selectTbody = selectWrap.querySelector('table tbody');
+          const selectRow = selectWrap.querySelector('table tr');
+          if (!selectRow) {
+            return;
+          }
+          const rowHeight = selectRow.clientHeight;
+          let showRowNum = Math.round(selectWrap.clientHeight / rowHeight);
+
+          const createElementTR = document.createElement('tr');
+          let createElementTRHeight = (dataSize - showRowNum - spillDataNum) * rowHeight;
+          createElementTR.setAttribute('style', `height: ${createElementTRHeight}px;`);
+          selectTbody.append(createElementTR);
+
+          // 监听滚动后事件
+          selectWrap.addEventListener('scroll', function () {
+            let topPx = this.scrollTop - spillDataNum * rowHeight;
+            let topNum = Math.round(topPx / rowHeight);
+            let minTopNum = dataSize - spillDataNum - showRowNum;
+            if (topNum > minTopNum) {
+              topNum = minTopNum;
+            }
+            if (topNum < 0) {
+              topNum = 0;
+              topPx = 0;
+            }
+            selectTbody.setAttribute('style', `transform: translateY(${topPx}px)`);
+            createElementTR.setAttribute('style', `height: ${createElementTRHeight - topPx > 0 ? createElementTRHeight - topPx : 0}px;`);
+            setRowDisableNone(topNum, showRowNum, binding);
+          })
+        });
+      }
+    }
   },
   created() {
     this.getList();
+    this.getTableData();
   },
   mounted() {
     this.uploader.assignBrowse(this.$refs.selectFile, false)
@@ -418,6 +284,18 @@ export default {
   },
   computed: {
     ...mapGetters(["globalUploader", "uploader", "path"]),
+    filteredData() {
+      let list = this.tableData.filter((item, index) => {
+        if (index < this.currentStartIndex) {
+          return false;
+        } else if (index > this.currentEndIndex) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      return list
+    }
   },
   methods: {
     ...mapMutations({
@@ -428,6 +306,26 @@ export default {
       popLastFile: 'uploader/popLastFile',
       getLastFile: 'uploader/getLastFile',
     }),
+    handelLoadmore(currentStartIndex, currentEndIndex) {
+      this.currentStartIndex = currentStartIndex;
+      this.currentEndIndex = currentEndIndex;
+    },
+    getTableData() {
+      let cont = 0;
+      let tableData = [];
+      while (cont < 10000) {
+        cont = cont + 1;
+        let object = {
+          name: '王小虎' + cont,
+          sex: cont
+        }
+        tableData.push(object);
+      }
+      setTimeout(() => {
+        this.tableData = tableData;
+      }, 0);
+    },
+
     async goToDir(index) {
       const length = this.path.length;
       for (let i = 0; i < length - index - 1; i++) {
@@ -475,35 +373,7 @@ export default {
         this.loading = false;
       });
     },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        fileId: null,
-        fileName: null,
-        suffix: null,
-        size: null,
-        mimeType: null,
-        storageId: null,
-        uploadPath: null,
-        fileKey: null,
-        isDir: null,
-        parentId: null,
-        randomKey: null,
-        identifier: null,
-        isPublic: null,
-        delFlag: null,
-        createBy: null,
-        createTime: null,
-        updateBy: null,
-        updateTime: null
-      };
-      this.resetForm("form");
-    },
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -520,46 +390,7 @@ export default {
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加文件";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const fileId = row.fileId || this.ids
-      getFiles(fileId).then(response => {
-        this.form = response.data;
-        this.$set(this.content, "text", this.form.textContent || "");
-        this.$set(this.content, "html", this.form.htmlContent || "");
-        this.open = true;
-        this.title = "修改文件";
-      });
-    },
-    /** 提交按钮 */
-    submitForm() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.form.textContent = this.content.text;
-          this.form.htmlContent = this.content.html;
-          if (this.form.fileId != null) {
-            updateFiles(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addFiles(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },
+
     /** 删除按钮操作 */
     handleDelete(row) {
       const fileIds = row.fileId || this.ids;

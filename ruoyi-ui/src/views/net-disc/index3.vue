@@ -31,7 +31,7 @@
           plain
           icon="el-icon-plus"
           size="mini"
-          @click="handleAdd"
+          @click="handleDelete"
           v-hasPermi="['netdisc:files:add']"
         >新增
         </el-button>
@@ -43,7 +43,7 @@
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
-          @click="handleUpdate"
+          @click="handleDelete"
           v-hasPermi="['netdisc:files:edit']"
         >新建文件夹
         </el-button>
@@ -93,54 +93,11 @@
         </el-button>
       </el-col>
     </el-row>
+
     <avue-crud v-loading="loading" :data="filesList" :option="option"
                :data-size="filesList.length"
                @cell-dblclick="openDirectory"
     ></avue-crud>
-    <el-table v-loading="loading" :data="filesList" @selection-change="handleSelectionChange"
-              @row-dblclick="openDirectory">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="文件名" align="center" prop="fullFileName"/>
-      <el-table-column label="上传时间" align="center" prop="createTime"/>
-      <el-table-column label="修改时间" align="center" prop="updateTime"/>
-      <el-table-column label="文件大小" align="center" prop="size"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['netdisc:files:edit']"
-          >分享
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['netdisc:files:edit']"
-          >下载
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['netdisc:files:edit']"
-          >删除
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['netdisc:files:edit']"
-          >重命名
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
 
     <pagination
       v-show="total>0"
@@ -161,11 +118,11 @@ import {
   updateFiles
 } from "@/api/net-disc/file";
 import {mapActions, mapGetters, mapMutations} from "vuex";
-
 export default {
   name: "Files",
   data() {
     return {
+
       option: {
         align: 'left',
         menuType: this.menuType,
@@ -186,15 +143,15 @@ export default {
             overHidden: true,
             sortable: true,
             click:(value,column)=>{
-              if (column.property === "fullFileName") {
-                console.log(column)
-                if (column.isDir) {//双击目录名，打开目录
-                  // this.pushLastFile(column)
-                  // this.getList()
-                } else {
-                  //双击文件名，预览文件
+                if (column.property === "fullFileName") {
+                  console.log(column)
+                  if (column.isDir) {//双击目录名，打开目录
+                    // this.pushLastFile(column)
+                    // this.getList()
+                  } else {
+                    //双击文件名，预览文件
+                  }
                 }
-              }
             }
           },
           {
@@ -334,6 +291,8 @@ export default {
           },
         ]
       },
+
+
       // 遮罩层
       loading: true,
       // 选中数组
@@ -368,45 +327,7 @@ export default {
         randomKey: null,
         identifier: null,
         isPublic: null,
-      },
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {
-        fileName: [
-          {required: true, message: "文件或目录原始名称，不包含后缀不能为空", trigger: "blur"}
-        ],
-        suffix: [
-          {required: true, message: "文件名后缀，不包含小数点不能为空", trigger: "blur"}
-        ],
-        size: [
-          {required: true, message: "文件大小不能为空", trigger: "blur"}
-        ],
-        mimeType: [
-          {required: true, message: "文件传输类型不能为空", trigger: "change"}
-        ],
-        storageId: [
-          {required: true, message: "存储类型id，OSS/本地不能为空", trigger: "blur"}
-        ],
-        uploadPath: [
-          {required: true, message: "服务端存储路径不能为空", trigger: "blur"}
-        ],
-        fileKey: [
-          {required: true, message: "文件的唯一key不能为空", trigger: "blur"}
-        ],
-        isDir: [
-          {required: true, message: "是否为目录，0表示文件，1表示目录不能为空", trigger: "blur"}
-        ],
-        parentId: [
-          {required: true, message: "父级目录id，如果为0则为根目录不能为空", trigger: "blur"}
-        ],
-        isPublic: [
-          {required: true, message: "是否公开，1表示所有人可以访问，0表示需要访问权限不能为空", trigger: "blur"}
-        ],
-        createBy: [
-          {required: true, message: "创建者不能为空", trigger: "blur"}
-        ],
-      },
+      }
     };
   },
   created() {
@@ -428,6 +349,8 @@ export default {
       popLastFile: 'uploader/popLastFile',
       getLastFile: 'uploader/getLastFile',
     }),
+
+    //进入指定目录
     async goToDir(index) {
       const length = this.path.length;
       for (let i = 0; i < length - index - 1; i++) {
@@ -438,7 +361,9 @@ export default {
         this.getList();
       }
     },
-    returnParentDirectory() {//返回上一级目录
+
+    //返回上一级目录
+    returnParentDirectory() {
       this.popLastFile().then(
         file => {
           if (file) {
@@ -451,7 +376,7 @@ export default {
       let currentFile = await this.getLastFile();
       if (currentFile.fileId > 0) {
         this.clearPath();
-        this.getList();
+        await this.getList();
       }
     },
     openDirectory(row, column, event) {
@@ -475,35 +400,7 @@ export default {
         this.loading = false;
       });
     },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        fileId: null,
-        fileName: null,
-        suffix: null,
-        size: null,
-        mimeType: null,
-        storageId: null,
-        uploadPath: null,
-        fileKey: null,
-        isDir: null,
-        parentId: null,
-        randomKey: null,
-        identifier: null,
-        isPublic: null,
-        delFlag: null,
-        createBy: null,
-        createTime: null,
-        updateBy: null,
-        updateTime: null
-      };
-      this.resetForm("form");
-    },
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -520,46 +417,7 @@ export default {
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加文件";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const fileId = row.fileId || this.ids
-      getFiles(fileId).then(response => {
-        this.form = response.data;
-        this.$set(this.content, "text", this.form.textContent || "");
-        this.$set(this.content, "html", this.form.htmlContent || "");
-        this.open = true;
-        this.title = "修改文件";
-      });
-    },
-    /** 提交按钮 */
-    submitForm() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.form.textContent = this.content.text;
-          this.form.htmlContent = this.content.html;
-          if (this.form.fileId != null) {
-            updateFiles(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addFiles(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },
+
     /** 删除按钮操作 */
     handleDelete(row) {
       const fileIds = row.fileId || this.ids;
